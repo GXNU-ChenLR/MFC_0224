@@ -5,14 +5,14 @@ LRESULT CALLBACK WinSunProc(
 	HWND hwnd,//handle to window
 	UINT uMsg,//message identifier
 	WPARAM wParam,//first message parameter
-	LPARAM lParam
+	LPARAM lParam //second message parameter
 );
 
 int WINAPI WinMain(
 	HINSTANCE hInstance, //handle to current instance
 	HINSTANCE hPrevInstance, //handle to previous instance
 	LPSTR lpCmdLine, //command line
-	int nCmdShow
+	int nCmdShow     //show state
 )
 
 {//设计一个窗口类
@@ -24,7 +24,7 @@ int WINAPI WinMain(
 	wndcls.hIcon = LoadIcon(NULL, IDI_ERROR);
 	wndcls.hInstance = hInstance; //应用程序实例句柄由WinMain函数传进来
 	wndcls.lpfnWndProc = WinSunProc;
-	wndcls.lpszClassName = L"sunxin2006";
+	wndcls.lpszClassName = "sunxin2006";
 	wndcls.lpszMenuName = NULL;
 	wndcls.style = CS_HREDRAW | CS_VREDRAW;
 	RegisterClass(&wndcls);
@@ -32,8 +32,7 @@ int WINAPI WinMain(
 
 	//创建窗口，定义一个变量用来保存成功创建窗口后返回的句柄
 	HWND hwnd;
-	LPCWSTR aa = L"sunxin2006";
-	hwnd = CreateWindow(aa, L"http://www.sunxin.org", WS_OVERLAPPEDWINDOW, 0, 0, 600, 400, NULL, NULL, hInstance, NULL);
+	hwnd = CreateWindow("sunxin2006", "http://www.sunxin.org", WS_OVERLAPPEDWINDOW, 0, 0, 600, 400, NULL, NULL, hInstance, NULL);
 
 	//显示及刷新窗口
 	ShowWindow(hwnd, SW_SHOWNORMAL);
@@ -54,33 +53,32 @@ LRESULT CALLBACK WinSunProc(
 	HWND hwnd,//handle to window
 	UINT uMsg,//message identifier
 	WPARAM wParam,//first message parameter
-	LPARAM lParam
+	LPARAM lParam //second message parameter
 )
 {
 	switch (uMsg)
 	{
 	case WM_CHAR:
 		char szChar[20];
-		sprintf_s(szChar, "char code is %d", wParam);
-		MessageBox(hwnd, (LPCWSTR)szChar, L"char", 0);
+		sprintf(szChar, "char code is %d", wParam);
+		MessageBox(hwnd, szChar, ("char"), 0);
 		break;
 	case WM_LBUTTONDOWN:
-		MessageBox(hwnd, L"mouse clicked", L"message", 0);
+		MessageBox(hwnd, "mouse clicked", "message", 0);
 		HDC hdc;
 		hdc = GetDC(hwnd);  //不能在响应WM_PAINT消息时调用
-
-		TextOut(hdc, 0, 50, L"程序员之家", strlen("程序员之家"));
+		TextOut(hdc, 0, 50, "程序员之家", strlen("程序员之家"));
 		//ReleaseDC(hwnd,hdc);
 		break;
 	case WM_PAINT:
 		HDC hDC;
 		PAINTSTRUCT ps;
 		hDC = BeginPaint(hwnd, &ps); //BeginPaint只能在响应WM_PAINT消息时调用
-		TextOut(hDC, 0, 0, L"http://www.sunxin.org", strlen("http://www.sunxin.org"));
+		TextOut(hDC, 0, 0, "http://www.sunxin.org", strlen("http://www.sunxin.org"));
 		EndPaint(hwnd, &ps);
 		break;
 	case WM_CLOSE:
-		if (IDYES == MessageBox(hwnd, L"是否真的结束？", L"message", MB_YESNO))
+		if (IDYES == MessageBox(hwnd, "是否真的结束？", "message", MB_YESNO))
 		{
 			DestroyWindow(hwnd);
 		}
